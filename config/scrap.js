@@ -1,5 +1,5 @@
-const config = {
+const scrap = {
     imageClass: 'recCard__img StretchedBox',
 }
 
-module.exports.config = config
+module.exports.scrap = scrap    

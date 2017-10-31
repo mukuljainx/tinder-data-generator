@@ -2,10 +2,10 @@ const fs = require('fs');
 const request = require('request');
 const {Builder, By, Key, until} = require('selenium-webdriver');
 
-// configuration
-const config = require('./config');
+// // configuration
+// const config = require('./config');
 
-console.log(config);
+// console.log(config);
 
 let driver = new Builder()
     .forBrowser('chrome')
@@ -13,7 +13,8 @@ let driver = new Builder()
 
 const swipeRight = (i) => {
     console.log(i);
-    return driver.findElement(By.tagName("body")).sendKeys("webdriver", Key.ARROW_RIGHT);
+    return driver.findElement(By.tagName("body"))
+    .sendKeys("webdriver", Key.ARROW_RIGHT);
 }
 
 const findImage = () => {
@@ -25,22 +26,16 @@ const findImage = () => {
     });
 };
 
-function downloadFile(localPath, name, url) {
-  return new Promise(function(reject, resolve) {
-    console.log(">>>>>>>>>>>>>>>>>>.");
-    console.log(url, localPath, name);
-    const fileName = `${localPath}/${name}.jpg`;
-    if (!fs.existsSync(localPath)) {
-      fs.mkdirSync(localPath);
-    }
+const downloadFile = (localPath, name, url) => {
+  console.log(">>>>>>>>>>>>>>>>>>.");
+  console.log(url, localPath, name);
+  const fileName = `${localPath}/${name}.jpg`;
+  if (!fs.existsSync(localPath)) {
+    fs.mkdirSync(localPath);
+  }
 
-    request(url)
-      .on("error", reject("error"))
-      .pipe(fs.createWriteStream(fileName));
-    on("finish", () => {
-      resolve("true");
-    });
-  });
+  request(url)
+    .pipe(fs.createWriteStream(fileName));
 };
 
 
@@ -58,7 +53,11 @@ driver.get('https://tinder.com');
         downloadUrl.splice(-3);
         return downloadUrl.join("");
       })
-      .then(url => console.log(url))
+      .then(url => {
+        if (url){
+          downloadFile("./tmp", index, url);
+        }
+      })
       .then(() => swipeRight(index));
 });
 
