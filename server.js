@@ -1,11 +1,12 @@
 const fs = require('fs');
 const request = require('request');
+const { v4 } = require('uuid');
 const {Builder, By, Key, until} = require('selenium-webdriver');
 
-// // configuration
-// const config = require('./config');
+const configureMongoose = require("./config/mongoose");
+const user = require("./controllers/user");
+const db = configureMongoose();
 
-// console.log(config);
 
 let driver = new Builder()
     .forBrowser('chrome')
@@ -13,22 +14,65 @@ let driver = new Builder()
 
 const swipeRight = (i) => {
     console.log(i);
-    return driver.findElement(By.tagName("body"))
-    .sendKeys("webdriver", Key.ARROW_RIGHT);
+    return driver
+      .findElement(By.tagName("body"))
+      .sendKeys("webdriver", Key.ARROW_RIGHT);
 }
 
-const findImage = () => {
+const selectProfile = () => {
   return driver
-    .wait(
-      until.elementLocated(By.css("div.recCard__img.StretchedBox")), 6000000)
-    .then(el => {
-      return el;
-    });
+    .findElement(By.tagName("body"))
+    .sendKeys("webdriver", Key.ARROW_UP);
+      console.log("selectm profile complete");
+}
+
+const nextImage = () => {
+  return driver
+    .findElement(By.tagName("body"))
+    .sendKeys("webdriver", Key.SPACE);
+};
+ 
+const findElement = (classToScrap) => {
+  return driver
+    .wait(until.elementLocated(By.css(classToScrap)), 6000000);
 };
 
+const getBio = (nameOfClass) => {
+   return new Promise((resolve, reject) => {
+    driver.findElement(By.css(nameOfClass))
+      .then(function(webElement) {
+          resolve(webElement.getText());
+      }, function(err) {
+        resolve('No Bio');
+      });
+   })
+};
+
+const getName = nameOfClass => {
+    return driver.wait(until.elementLocated(By.css(nameOfClass)), 10000).then(
+      function(webElement) {
+        return webElement.getText();
+      },
+      function(err) {
+        return Promise.reject("No name");
+      }
+    );
+};
+
+const getImageCount = () => {
+   return driver
+      .findElements(
+        By.css('div.profileCard__sliderContainer [data-swipeable="true"]')
+      )
+      .then(webElement => webElement.length)
+      .catch(() => Promise.reject('No Images'));
+}
+
+const getImageUrl = () => {
+  return driver.wait(until.elementLocated(By.css('div[aria-hidden="false"] img')), 10000);
+}
+
 const downloadFile = (localPath, name, url) => {
-  console.log(">>>>>>>>>>>>>>>>>>.");
-  console.log(url, localPath, name);
   const fileName = `${localPath}/${name}.jpg`;
   if (!fs.existsSync(localPath)) {
     fs.mkdirSync(localPath);
@@ -38,27 +82,62 @@ const downloadFile = (localPath, name, url) => {
     .pipe(fs.createWriteStream(fileName));
 };
 
+const insertIntoDb = (payload) => {
+  user.create({
+    name: payload.name,
+    age: payload.age,
+    bio: payload.bio,
+    images: payload.images,
+    score: 0
+  });
+}
 
 driver.get('https://tinder.com');
 // driver.sleep(20000); 
 // so in these 35 seconds this time just login using fb manually.
 // I was feeling so lazy to write automation for this.
 [...Array(10000)].forEach((value, index) => {
-    driver
-      .then(() => findImage())
-      .then(elem => elem.getAttribute("style"))
-      .then(rawLink => {
-        const downloadUrl = rawLink.split("");
-        downloadUrl.splice(0, 23);
-        downloadUrl.splice(-3);
-        return downloadUrl.join("");
+    const data = {
+      images: []
+    };
+    const init = driver
+      .then(() => findElement("div.recCard__img.StretchedBox"))
+      .then(() => selectProfile())
+      .then(() => getName("div.profileCard__nameAge"))
+      .then(name => {
+        console.log(name);
+        data.name = name.substr(0, name.indexOf(","));
+        data.age = parseInt(name.substr("-2"), 10);
       })
-      .then(url => {
-        if (url){
-          downloadFile("./tmp", index, url);
-        }
+      .then(() => console.log("name loaded"))
+      .then(() => driver.sleep(2000))
+      .then(() => getImageCount())
+      .then(count => {
+        console.log(count);
+        return [...Array(count)].reduce(res => {
+          getImageUrl()
+            .then(url => url.getAttribute("src"))
+            .then(src => {
+              const uuid = v4();
+              res.push({src, uuid});
+              downloadFile('./tmp', v4(), src);
+            });
+          nextImage();
+          driver.sleep(2000);
+          return res;
+        }, []);
       })
-      .then(() => swipeRight(index));
+      .then(urls => Array.prototype.push.apply(data.images, urls))
+      .then(() => console.log("image loaded"))
+      .then(() => getBio("div.profileCard__bio span"))
+      .then(bio => {
+        data.bio = bio ? bio : "";
+      })
+      .then(() => console.log("bio loaded"))
+      .then(() => console.log(data))
+      .then(() => insertIntoDb(data))
+      .catch(err => driver.navigate().refresh())
+      .finally(() => swipeRight(index));
 });
 
 driver.quit();

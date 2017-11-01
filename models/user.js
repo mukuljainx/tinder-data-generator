@@ -5,7 +5,6 @@ const UserSchema = new Schema({
   name: String,
   age: String,
   bio: String,
-  interest: [],
   images: [],
   score: {
       type: Number,
