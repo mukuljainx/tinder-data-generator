@@ -110,7 +110,7 @@ driver.get('https://tinder.com');
         data.age = parseInt(name.substr("-2"), 10);
       })
       .then(() => console.log("name loaded"))
-      .then(() => driver.sleep(2000))
+      .then(() => driver.sleep(3000))
       .then(() => getImageCount())
       .then(count => {
         console.log(count);
@@ -118,9 +118,12 @@ driver.get('https://tinder.com');
           getImageUrl()
             .then(url => url.getAttribute("src"))
             .then(src => {
-              const uuid = v4();
-              res.push({src, uuid});
-              downloadFile('./tmp', v4(), src);
+              const obj = { src, uuid: v4() };
+              res.push(obj);
+              return obj;
+            })
+            .then(obj => {
+              downloadFile("./tmp", obj.uuid, obj.src);
             });
           nextImage();
           driver.sleep(2000);
@@ -136,7 +139,10 @@ driver.get('https://tinder.com');
       .then(() => console.log("bio loaded"))
       .then(() => console.log(data))
       .then(() => insertIntoDb(data))
-      .catch(err => driver.navigate().refresh())
+      .catch(err => {
+        console.log(err)
+        driver.navigate().refresh()
+      })
       .finally(() => swipeRight(index));
 });
 

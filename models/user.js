@@ -6,10 +6,7 @@ const UserSchema = new Schema({
   age: String,
   bio: String,
   images: [],
-  score: {
-      type: Number,
-      default: 0
-  }
+  score: []
 });
 
 module.exports = mongoose.model('User', UserSchema);
