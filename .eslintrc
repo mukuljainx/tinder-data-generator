@@ -1,0 +1,73 @@
+{
+    "root": true,
+    "extends": [
+        "prettier"
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 7,
+        "ecmaFeatures": {
+            "impliedStrict": true,
+            "jsx": true
+        }
+    },
+    "env": {
+        "browser": true,
+        "node": true, 
+        "es6": true
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true,
+                "optionalDependencies": false,
+                "peerDependencies": false
+            }
+        ],
+        "require-jsdoc": [
+            "error",
+            {
+                "require": {
+                    "FunctionDeclaration": true,
+                    "MethodDefinition": true,
+                    "ClassDeclaration": true,
+                    "ArrowFunctionExpression": true,
+                    "FunctionExpression": false
+                }
+            }
+        ],
+        "valid-jsdoc": [
+            "error",
+            {
+                "prefer": {
+                    "arg": "param",
+                    "argument": "param",
+                    "class": "constructor",
+                    "return": "returns",
+                    "virtual": "abstract"
+                },
+                "requireReturn": false,
+                "requireParamDescription": false,
+                "requireReturnDescription": false
+            }
+        ]
+    }
+}
