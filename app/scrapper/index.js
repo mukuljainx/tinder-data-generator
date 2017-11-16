@@ -69,7 +69,7 @@ const getBio = nameOfClass => {
         resolve(webElement.getText());
       },
       function(err) {
-        resolve('No Bio');
+        resolve('');
       }
     );
   });
@@ -86,7 +86,7 @@ const getName = nameOfClass => {
       return webElement.getText();
     },
     function(err) {
-      return Promise.reject('No name');
+      return Promise.reject('');
     }
   );
 };
@@ -190,7 +190,11 @@ driver.get('https://tinder.com');
     .then(bio => {
       data.bio = bio ? bio : '';
     })
-    .then(() => console.log('bio loaded'))
+    .then(() => getBio('div.profileCard__info'))
+    .then(abt => {
+      // not keep distance info
+      abt.indexOf('away') > -1 ? (data.about = '') : (data.about = abt);
+    })
     .then(() => console.log(data))
     .then(() => insertIntoDb(data))
     .catch(err => {
