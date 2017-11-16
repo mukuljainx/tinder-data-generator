@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon app/api/index.js",
     "prod": "NODE_ENV=production",
     "apiserver": "node ./app/api/index.js",
-    "scrapper": "NODE_ENV=development nodemon ./app/scrapper/index.js",
+    "scrapper": "NODE_ENV=development node --inspect ./app/scrapper/index.js",
     "prettier": "prettier --l --config .prettierrc.json './**/*.js'",
     "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'"
   },
