@@ -50,13 +50,32 @@ exports.create = body => {
 exports.find = (req, res) => {
   console.log('response');
   // profile.find({'score': {$lt: 5}})
-  Profile.find({}).exec((err, profile) => {
+  Profile.find({
+    'images.score.4': { $exists: false }
+  }).exec((err, profile) => {
     if (err) {
-      return res.status(400).send({ message: getErrorMessage(err) });
+      return res.status(500).send({ message: getErrorMessage(err) });
     }
     const random = getRandomArbitary(0, profile.length);
-    console.log(profile);
-    return res.status(200).json(profile[random] || []);
+    const selectedProfile = profile[random];
+
+    const selectedImage = selectedProfile
+      ? selectedProfile.images.filter(img => img.score.length < 5)
+      : [];
+
+    const responseProfile = selectedProfile
+      ? {
+          _id: selectedProfile._id,
+          name: selectedProfile.name,
+          age: selectedProfile.age,
+          bio: selectedProfile.bio,
+          about: selectedProfile.about,
+          images: selectedImage.length
+            ? selectedImage[getRandomArbitary(0, selectedImage.length)]
+            : []
+        }
+      : [];
+    return res.status(200).json(responseProfile);
   });
 };
 

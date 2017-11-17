@@ -21,11 +21,8 @@ const ProfileSchema = new Schema({
   name: String,
   age: String,
   bio: String,
-  images: [imageSchema],
-  score: {
-    type: Number,
-    default: 0
-  }
+  about: String,
+  images: [imageSchema]
 });
 
 module.exports = mongoose.model('Profile', ProfileSchema);
