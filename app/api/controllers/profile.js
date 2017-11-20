@@ -86,10 +86,18 @@ exports.find = (req, res) => {
  */
 exports.score = (req, res) => {
   const { id, score } = req.body;
-  Profile.findOneAndUpdate({ _id: id }, { score }, (err, profile) => {
-    if (err) {
-      return res.send(err);
+  Profile.findOneAndUpdate(
+    { 'images._id': id },
+    {
+      $set: {
+        'images.$.score': score
+      }
+    },
+    (err, profile) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.status(200).json(profile);
     }
-    return res.status(200).json({ message: 'Sucssfully updated' });
-  });
+  );
 };
