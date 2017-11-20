@@ -1,0 +1,14 @@
+i.star {
+    width: 50px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.rating {
+    direction: rtl;
+}
+
+.rating>i:hover,
+.rating>i:hover~i {
+    color: gold;
+}
