@@ -38,33 +38,46 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "debug": "^3.1.0",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.30.1",
-    "mkdirp": "^0.5.1",
-    "ncp": "^2.0.0",
-    "node-sass": "^4.5.3",
-    "opn": "^5.1.0",
-    "rimraf": "^2.6.2",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
+    "css-loader": "^0.28.7",
+    "debug": "^3.1.0",
     "eslint": "^4.9.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.4.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
+    "jest-css-modules": "^1.1.0",
     "jsdoc": "^3.5.5",
+    "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
+    "ncp": "^2.0.0",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
-    "prettier": "^1.7.4"
+    "opn": "^5.1.0",
+    "prettier": "^1.7.4",
+    "rimraf": "^2.6.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-merge": "^4.1.0"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/web/global.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "global.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(scss)$": "<rootDir>/node_modules/jest-css-modules"
+    },
+    "testRegex": "(/test/web/.*\\.spec)\\.js"
   }
 }
