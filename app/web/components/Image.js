@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
  * @param {object} source
  * @returns {JSX}
  */
-const ImageComponent = ({ source = '' }) => {
-  return <img src={source} width="400" height="400" alt="profile" />;
+const ImageComponent = ({ source = '', width = 400, height = 400 }) => {
+  return <img src={source} width={width} height={height} alt="profile" />;
 };
 
 ImageComponent.PropTypes = {

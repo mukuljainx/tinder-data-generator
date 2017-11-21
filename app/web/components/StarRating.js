@@ -1,10 +1,15 @@
 import React from 'react';
 import Star from './Star';
+import PropTypes from 'prop-types';
 import './star.scss';
 
+/**
+ * StarRating Component
+ * @param {object} props
+ * @returns {JSX}
+ */
 const StarRating = ({ starsSelected = 0, totalStars = 5, onRate = f => f }) => (
   <div className="rating">
-    {console.log(starsSelected)}
     {[...Array(totalStars)].map((e, i) => (
       <Star
         key={i}
@@ -12,8 +17,12 @@ const StarRating = ({ starsSelected = 0, totalStars = 5, onRate = f => f }) => (
         onClick={() => onRate(totalStars - i)}
       />
     ))}
-    <br />
   </div>
 );
 
+StarRating.PropTypes = {
+  starsSelected: PropTypes.number,
+  totalStars: PropTypes.number,
+  onRate: PropTypes.func
+};
 export default StarRating;

@@ -8,6 +8,7 @@
     "dev:api": "NODE_ENV=development nodemon app/api/index.js",
     "prod:api": "node ./app/api/index.js",
     "prod": "NODE_ENV=production",
+    "test:webui": "jest",
     "dev:webui": "node ./build/development.js",
     "build:webui": "node ./build/build.js",
     "scrapper": "NODE_ENV=development nodemon ./app/scrapper/index.js",
@@ -42,6 +43,8 @@
     "chai-http": "^3.0.0",
     "css-loader": "^0.28.7",
     "debug": "^3.1.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "eslint": "^4.9.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-import": "^2.8.0",
@@ -60,8 +63,10 @@
     "nodemon": "^1.12.1",
     "opn": "^5.1.0",
     "prettier": "^1.7.4",
+    "react-addons-test-utils": "^15.6.2",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
+    "sinon": "^4.1.2",
     "style-loader": "^0.19.0",
     "url-loader": "^0.6.2",
     "webpack": "^3.6.0",
@@ -70,10 +75,12 @@
   },
   "jest": {
     "setupFiles": [
+      "./test/web/shim.js",
       "./test/web/global.js"
     ],
     "modulePathIgnorePatterns": [
-      "global.js"
+      "global.js",
+      "shim.js"
     ],
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/node_modules/jest-css-modules"

@@ -1,9 +1,9 @@
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 /**
  * Star
- * @param {boolean} selected 
+ * @param {boolean} selected
  * @param {function} onClick
  * @returns {element}
  */
@@ -18,9 +18,9 @@ const Star = ({ selected = false, onClick = f => f }) => (
   </i>
 );
 
-Star.propTypes = {
-  selected: propTypes.bool.isRequired,
-  onClick: propTypes.func.isRequired
+Star.PropTypes = {
+  selected: PropTypes.bool,
+  onClick: PropTypes.func
 };
 
 export default Star;

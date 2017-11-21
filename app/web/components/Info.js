@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
  * @param {object} props
  * @returns {JSX}
  */
-const Info = ({ name, age, bio, about }) => {
+const Info = ({ name = 'Name', age = 14, bio = 'bio', about = 'about' }) => {
   return (
     <ul>
       <li>
@@ -19,10 +19,10 @@ const Info = ({ name, age, bio, about }) => {
 };
 
 Info.PropTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.string.isRequired,
-  bio: PropTypes.string.isRequired,
-  about: PropTypes.string.isRequired
+  name: PropTypes.string,
+  age: PropTypes.string,
+  bio: PropTypes.string,
+  about: PropTypes.string
 };
 
 export default Info;
