@@ -63,3 +63,4 @@ tmp/
 .DS_Store
 
 dist/
+coverage/

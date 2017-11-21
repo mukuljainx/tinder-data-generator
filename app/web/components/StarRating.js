@@ -1,3 +1,6 @@
+/**
+ * @author ayusharma
+ */
 import React from 'react';
 import Star from './Star';
 import PropTypes from 'prop-types';
