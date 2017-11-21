@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha test/**/*.js --exit",
-    "dev": "NODE_ENV=development nodemon app/api/index.js",
+    "test:api": "NODE_ENV=test mocha test/api/**/*.js --exit",
+    "dev:api": "NODE_ENV=development nodemon app/api/index.js",
+    "prod:api": "node ./app/api/index.js",
     "prod": "NODE_ENV=production",
-    "apiserver": "node ./app/api/index.js",
-    "scrapper": "NODE_ENV=development node --inspect ./app/scrapper/index.js",
+    "test:webui": "jest && codecov",
+    "dev:webui": "node ./build/development.js",
+    "build:webui": "node ./build/build.js",
+    "scrapper": "NODE_ENV=development nodemon ./app/scrapper/index.js",
     "prettier": "prettier --l --config .prettierrc.json './**/*.js'",
-    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'"
+    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'",
+    "test": "npm run test:api && npm run test:webui"
   },
   "author": "",
   "license": "ISC",
@@ -24,20 +28,72 @@
     "morgan": "^1.9.0",
     "request": "^2.83.0",
     "selenium-webdriver": "^3.6.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
+    "codecov": "^3.0.0",
+    "css-loader": "^0.28.7",
+    "debug": "^3.1.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "eslint": "^4.9.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.4.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
+    "jest": "^21.2.1",
+    "jest-css-modules": "^1.1.0",
     "jsdoc": "^3.5.5",
+    "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
+    "ncp": "^2.0.0",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",
-    "prettier": "^1.7.4"
+    "opn": "^5.1.0",
+    "prettier": "^1.7.4",
+    "rimraf": "^2.6.2",
+    "sass-loader": "^6.0.6",
+    "sinon": "^4.1.2",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-merge": "^4.1.0"
+  },
+  "jest": {
+    "name": "tinder-rater-jest",
+    "verbose": true,
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "fixtures"
+    ],
+    "setupFiles": [
+      "./test/web/shim.js",
+      "./test/web/global.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "global.js",
+      "shim.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(scss)$": "<rootDir>/node_modules/jest-css-modules"
+    },
+    "testRegex": "(/test/web/.*\\.spec)\\.js"
   }
 }

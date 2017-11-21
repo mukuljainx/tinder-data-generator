@@ -61,3 +61,6 @@ tmp/
 
 *.zip
 .DS_Store
+
+dist/
+coverage/

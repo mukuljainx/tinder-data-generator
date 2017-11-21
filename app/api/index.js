@@ -14,8 +14,8 @@ const configureExpress = require('./config/express');
 const db = configureMongoose();
 const app = configureExpress();
 
-app.listen(3000);
+app.listen(7000);
 
-console.log('Server running at http://localhost:3000/', process.env.NODE_ENV);
+console.log('Server running at http://localhost:7000/', process.env.NODE_ENV);
 
 module.exports = app;
