@@ -1,4 +1,4 @@
-### Tinder Fun [![Build Status](https://travis-ci.org/ayusharma/tinder-data-generator.svg?branch=master)](https://travis-ci.org/ayusharma/tinder-data-generator)
+### Tinder Fun [![Build Status](https://travis-ci.org/ayusharma/tinder-data-generator.svg?branch=master)](https://travis-ci.org/ayusharma/tinder-data-generator) [![codecov](https://codecov.io/gh/ayusharma/tinder-data-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/ayusharma/tinder-data-generator)
 * * *
 This repository provides full data soultion to apply 
 
