@@ -1,0 +1,35 @@
+{
+    "images": [
+        {
+            "src": "https://exmple.com/image1.jpg",
+            "uuid": "fe562e9a-74b7-4a49-9f5c-0dff82bc1450",
+            "score": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "src": "https://exmple.com/image2.jpg",
+            "uuid": "09a9dfd6-a08e-44e1-a3dd-92117e0d76f7",
+            "score": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "src": "https://exmple.com/image3.jpg",
+            "uuid": "2fd3d4c1-5b6e-4481-aa9b-ccc169608700",
+            "score": []
+        }
+    ],
+    "name": "Rose",
+    "age": 22,
+    "bio": "I am very cool",
+    "about": "Dancer"
+}

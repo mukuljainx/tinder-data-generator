@@ -2,10 +2,8 @@
  * Web UI configuration
  * @author ayusharma
  */
-
 const config = {
-  HOST: 'http://localhost:7000',
-  API: 'api'
+  api: 'http://localhost:7000'
 };
 
 export default config;

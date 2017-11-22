@@ -4,8 +4,7 @@
  */
 import React from 'react';
 import { render } from 'react-dom';
-import fetch from 'isomorphic-fetch';
-
+import APIService from '../api';
 import config from '../config';
 
 // child components
@@ -14,9 +13,7 @@ import Info from './Info';
 import Reload from './Reload';
 import StarRating from './StarRating';
 
-// loading configuration
-const { API, HOST } = config;
-
+const API = new APIService(config);
 /**
  * Profile controller
  */
@@ -38,19 +35,15 @@ class Profile extends React.Component {
 
   /**
    * Get profile
+   * @returns {promise}
    */
   getProfile() {
-    this.setState({ loading: true });
-    fetch(`${HOST}/${API}/profiles`)
+    this.setState({ loading: true, loaded: false });
+    return API.GET('/api/profiles')
       .then(response => response.json())
-      .then(data =>
-        this.setState({
-          loaded: true,
-          loading: false,
-          data
-        })
-      )
-      .catch(() => {
+      .then(data => this.setState({ loaded: true, loading: false, data }))
+      .catch(error => {
+        console.error(error);
         this.setState({ loading: false });
       });
   }
@@ -61,22 +54,17 @@ class Profile extends React.Component {
    * @returns {promise}
    */
   onRate(i) {
-    const { _id, score } = this.state.data.images;
+    const { uuid, score } = this.state.data.images;
     const data = {
-      id: _id,
+      id: uuid,
       score: [...score, i]
     };
-    return fetch(`${HOST}/${API}/rate`, {
-      method: 'PUT',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(data => {
-      this.getProfile();
-      return data;
-    });
+    return API.PUT('/api/rate', { body: data })
+      .then(() => this.getProfile())
+      .then(() => this.state)
+      .catch(() => {
+        console.error('Unable to rate');
+      });
   }
 
   /**
@@ -91,17 +79,19 @@ class Profile extends React.Component {
    * @returns {JSX}
    */
   render() {
-    const { data, loading } = this.state;
+    const { data, loading, loaded } = this.state;
     const { getProfile, onRate } = this;
     return loading ? (
       <div>Loading...</div>
-    ) : (
+    ) : loaded ? (
       <div>
         <Info {...data} />
-        <ImageComponent source={`${HOST}/${data.images.uuid}.jpg`} />
+        <ImageComponent source={`${config.api}/${data.images.uuid}.jpg`} />
         <StarRating onRate={onRate} />
         <Reload onClick={() => getProfile()} />
       </div>
+    ) : (
+      <div>No data available</div>
     );
   }
 }

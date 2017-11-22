@@ -1,6 +1,7 @@
 ### Tinder Fun [![Build Status](https://travis-ci.org/ayusharma/tinder-data-generator.svg?branch=master)](https://travis-ci.org/ayusharma/tinder-data-generator) [![codecov](https://codecov.io/gh/ayusharma/tinder-data-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/ayusharma/tinder-data-generator)
 * * *
-This repository provides full data soultion to apply 
+
+This repository provides full data soultion to apply on a tinder profile.
 
 ### Features
  - Scrap data from tinder profiles including images, bio, about and name.
@@ -48,4 +49,26 @@ This application is built with Mongodb, without that you can't proceed.
 #### Installation 
 ```
 npm install
+```
+
+#### Tests
+```
+npm run test
+```
+
+#### Architecture
+* * *
+The project has divided in three parts.
+1. **Scrapper** -  It scraps the data from tinder web UI using selenium and stores in
+MongoDB according to the defined environment.
+2. **Rater API** - APIs to rate every image of a scrap profile. These are built using
+express, mongoose, mongodb, mocha and chai.
+3. **Rater Web App** - It is a React appliation made to rate every image. The testing 
+frameworks used are Jest and Enzyme.
+
+Find the documentation of every section in their respective parts.
+
+#### Running the application
+```js
+    npm run tinder-fun
 ```

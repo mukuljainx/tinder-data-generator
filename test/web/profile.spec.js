@@ -2,19 +2,20 @@
  * Main Component - index
  * @author ayusharma
  */
-jest.mock('isomorphic-fetch');
+jest.mock('../../app/web/api');
 import React from 'react';
 import { mount } from 'enzyme';
-import fetch from 'isomorphic-fetch';
-
+import APIService from '../../app/web/api';
 import Profile from '../../app/web/components/Profile';
+import config from '../../app/web/config';
+
+const API = new APIService(config);
 
 describe('<Profile /> component', () => {
   let wrapper;
-  beforeEach(() => {
+  it('should check the state for component will mount', () => {
     wrapper = mount(<Profile />);
-
-    fetch('http://example.com/api/profiles')
+    API.GET('http://example.com/api/profiles')
       .then(() => {
         expect(wrapper.state()).toEqual({
           loaded: false,
@@ -39,23 +40,19 @@ describe('<Profile /> component', () => {
             }
           }
         });
-      });
+      })
+      .catch(err => console.log(err));
   });
 
-  it('should set rate the image with correct body', () => {
+  it('should set rate and load the new data', () => {
     const onRate = wrapper.instance().onRate;
-    return onRate(5).then(res => {
-      expect(res.body).toEqual({
-        id: '5a0df128739e805d9e6d9355',
-        score: [1, 5]
+    return onRate(5)
+      .then(res => {
+        wrapper.update();
+        return res;
+      })
+      .then(res => {
+        expect(wrapper.state()).toEqual(res);
       });
-    });
-  });
-
-  it('should set rate the image with correct message', () => {
-    const onRate = wrapper.instance().onRate;
-    return onRate(5).then(res => {
-      expect(res.message).toEqual('Successfully updated');
-    });
   });
 });

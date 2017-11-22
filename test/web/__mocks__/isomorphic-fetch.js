@@ -2,20 +2,10 @@
  * Isomorphic Fetch mocks
  * @author ayusharma
  */
-const dataForGet = {
-  name: 'rose',
-  age: '14',
-  bio: 'bio',
-  images: {
-    src: 'http://example.com/image.jpg',
-    uuid: 'c2f6a139-f07e-4451-a295-567bbe8b8fce',
-    _id: '5a0df128739e805d9e6d9355',
-    score: [1]
-  }
+
+const testData = {
+  test: 'something'
 };
-
-const dataForPUT = 'Successfully updated';
-
 /**
  * fetch
  * @param {string} url
@@ -23,16 +13,41 @@ const dataForPUT = 'Successfully updated';
  * @returns {promise}
  */
 export default function fetch(url, config = { method: 'GET' }) {
+  if (!url) {
+    throw new Error('URL is not defined');
+  }
   return new Promise(function(resolve, reject) {
-    if (url && config.method === 'PUT') {
-      resolve({
-        body: JSON.parse(config.body),
-        message: 'Successfully updated'
-      });
+    switch (config.method) {
+      case 'GET':
+        resolve({
+          json: () => {
+            return { test: 'something' };
+          }
+        });
+      case 'POST':
+        resolve({
+          json: () => {
+            return JSON.parse(config.body);
+          }
+        });
+      case 'PUT':
+        resolve({
+          json: () => {
+            return JSON.parse(config.body);
+          }
+        });
+      case 'PATCH':
+        resolve({
+          json: () => {
+            return JSON.parse(config.body);
+          }
+        });
+      case 'DELETE':
+        resolve({
+          json: () => {
+            return {};
+          }
+        });
     }
-    if (url && config.method === 'GET') {
-      resolve({ json: () => dataForGet });
-    }
-    reject('failed');
   });
 }
