@@ -6,15 +6,17 @@
   "scripts": {
     "test:api": "NODE_ENV=test mocha test/api/**/*.js --exit",
     "dev:api": "NODE_ENV=development nodemon app/api/index.js",
-    "prod:api": "node ./app/api/index.js",
-    "prod": "NODE_ENV=production",
-    "test:webui": "jest && codecov",
+    "prod:api": "NODE_ENV=production node ./app/api/index.js",
+    "test:webui": "jest",
     "dev:webui": "node ./build/development.js",
     "build:webui": "node ./build/build.js",
-    "scrapper": "NODE_ENV=development nodemon ./app/scrapper/index.js",
+    "scrapper": "NODE_ENV=development node ./app/scrapper/index.js",
+    "scrapper:prod": "NODE_ENV=production node ./app/scrapper/index.js",
+    "test": "npm run test:api && npm run test:webui && codecov",
+    "pretinder-fun": "npm run build:webui",
+    "tinder-fun": "npm run prod:api",
     "prettier": "prettier --l --config .prettierrc.json './**/*.js'",
-    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'",
-    "test": "npm run test:api && npm run test:webui"
+    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'"
   },
   "author": "",
   "license": "ISC",
@@ -66,6 +68,7 @@
     "nodemon": "^1.12.1",
     "opn": "^5.1.0",
     "prettier": "^1.7.4",
+    "raf": "^3.4.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "sinon": "^4.1.2",
@@ -81,15 +84,13 @@
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "fixtures"
+      "dist"
     ],
     "setupFiles": [
-      "./test/web/shim.js",
       "./test/web/global.js"
     ],
     "modulePathIgnorePatterns": [
-      "global.js",
-      "shim.js"
+      "global.js"
     ],
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/node_modules/jest-css-modules"

@@ -22,7 +22,7 @@ module.exports = function() {
 
   // cors
   corsOptions = {
-    origin: ['http://localhost:8080', 'http://localhost:5000'],
+    origin: ['http://localhost:8080'],
     optionsSuccessStatus: 200
   };
 
@@ -45,5 +45,6 @@ module.exports = function() {
   // This would make the response a lot slower as it would have to wait for a
   // filesystem I/O operation.
   app.use(express.static('./tmp'));
+  app.use(express.static('./dist'));
   return app;
 };

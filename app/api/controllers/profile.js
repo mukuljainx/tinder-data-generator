@@ -51,7 +51,7 @@ exports.find = (req, res) => {
   console.log('response');
   // profile.find({'score': {$lt: 5}})
   Profile.find({
-    'images.score.4': { $exists: false }
+    images: { $elemMatch: { 'score.4': { $exists: false } } }
   }).exec((err, profile) => {
     if (err) {
       return res.status(500).send({ message: getErrorMessage(err) });
@@ -72,10 +72,13 @@ exports.find = (req, res) => {
           about: selectedProfile.about,
           images: selectedImage.length
             ? selectedImage[getRandomArbitary(0, selectedImage.length)]
-            : []
+            : {}
         }
-      : [];
-    return res.status(200).json(responseProfile);
+      : {};
+    if (Object.keys(responseProfile).length) {
+      return res.status(200).json(responseProfile);
+    }
+    return res.status(204).send('No data');
   });
 };
 
@@ -87,7 +90,7 @@ exports.find = (req, res) => {
 exports.score = (req, res) => {
   const { id, score } = req.body;
   Profile.findOneAndUpdate(
-    { 'images._id': id },
+    { 'images.uuid': id },
     {
       $set: {
         'images.$.score': score
@@ -97,7 +100,9 @@ exports.score = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      return res.status(200).json(profile);
+      Profile.findOne({ 'images.uuid': id }).exec((err, pf) => {
+        return res.status(200).json(pf);
+      });
     }
   );
 };
