@@ -16,7 +16,9 @@
     "pretinder-fun": "npm run build:webui",
     "tinder-fun": "npm run prod:api",
     "prettier": "prettier --l --config .prettierrc.json './**/*.js'",
-    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'"
+    "prettier-write": "prettier --write --config .prettierrc.json './**/*.js'",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -33,7 +35,8 @@
     "uuid": "^3.1.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -96,5 +99,6 @@
       "\\.(scss)$": "<rootDir>/node_modules/jest-css-modules"
     },
     "testRegex": "(/test/web/.*\\.spec)\\.js"
-  }
+  },
+  "snyk": true
 }
